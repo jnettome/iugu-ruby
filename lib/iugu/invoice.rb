@@ -19,6 +19,15 @@ module Iugu
       false
     end
 
+    def delete
+      copy Iugu::Factory.create_from_response(self.class.object_type, APIRequest.request('DELETE', "#{self.class.url(id)}"))
+      self.errors = nil
+      true
+    rescue Iugu::RequestWithErrors => ex
+      self.errors = ex.errors
+      false
+    end
+
     def refund
       copy Iugu::Factory.create_from_response(self.class.object_type, APIRequest.request('POST', "#{self.class.url(id)}/refund"))
       self.errors = nil
